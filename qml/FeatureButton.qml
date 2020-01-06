@@ -58,10 +58,10 @@ Button {
     font.pixelSize: fontSizeExtraSmall
     leftPadding: 4
     rightPadding: 4
-    topPadding: 12
-    bottomPadding: 12
+    topPadding: 2
+    bottomPadding: 2
     implicitWidth: 60
-    implicitHeight: 90
+//    implicitHeight: 60
 
     icon.name: "placeholder"
     icon.width: 44

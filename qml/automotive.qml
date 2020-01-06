@@ -58,8 +58,8 @@ ApplicationWindow {
     id: window
     width: 1280
     height: 720
-    minimumWidth: 1180
-    minimumHeight: 663
+    //    minimumWidth: 1180
+    //    minimumHeight: 663
     visible: true
     title: "Qt Quick Controls 2 - Imagine Style Example: Automotive"
 
@@ -88,13 +88,16 @@ ApplicationWindow {
     Frame {
         id: frame
         anchors.fill: parent
-        anchors.margins: 90
-
+        anchors {
+            margins: (window.height < window.width) ? window.height / 72 : window.width / 72
+        }
         RowLayout {
             id: mainRowLayout
             anchors.fill: parent
-            anchors.margins: 24
-            spacing: 36
+            //            anchors {
+            //                margins: (window.height < width) ? window.height / 72 : window.width / 72
+            //            }
+            spacing: window.height / 40
 
             Container {
                 id: leftTabBar
@@ -103,6 +106,10 @@ ApplicationWindow {
 
                 Layout.fillWidth: false
                 Layout.fillHeight: true
+
+                Component.onCompleted: {
+                    console.log("Hight: ", leftTabBar.height)
+                }
 
                 ButtonGroup {
                     buttons: columnLayout.children
@@ -132,13 +139,7 @@ ApplicationWindow {
                 }
 
                 FeatureButton {
-                    text: qsTr("Message")
-                    icon.name: "message"
-                    Layout.fillHeight: true
-                }
-
-                FeatureButton {
-                    text: qsTr("Command")
+                    text: qsTr("Voice")
                     icon.name: "command"
                     Layout.fillHeight: true
                 }
