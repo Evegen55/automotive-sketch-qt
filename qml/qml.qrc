@@ -4,5 +4,6 @@
         <file>GlowingLabel.qml</file>
         <file>CustomGlow.qml</file>
         <file>automotive.qml</file>
+        <file>PageWithMapMapboxGL.qml</file>
     </qresource>
 </RCC>

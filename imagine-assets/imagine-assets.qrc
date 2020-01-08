@@ -76,5 +76,6 @@
         <file>switchdelegate-indicator-pressed@2x.png</file>
         <file>toolseparator-separator-vertical.9.png</file>
         <file>toolseparator-separator-vertical@2x.9.png</file>
+        <file>pane-background.9.png</file>
     </qresource>
 </RCC>

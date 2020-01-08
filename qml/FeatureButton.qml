@@ -55,13 +55,13 @@ import QtQuick.Controls 2.12
 Button {
     id: button
     checkable: true
-    font.pixelSize: fontSizeExtraSmall
+//    font.pixelSize: fontSizeExtraSmall
     leftPadding: 4
     rightPadding: 4
     topPadding: 2
     bottomPadding: 2
-    implicitWidth: 60
-//    implicitHeight: 60
+    implicitWidth: 90
+    implicitHeight: 90
 
     icon.name: "placeholder"
     icon.width: 44

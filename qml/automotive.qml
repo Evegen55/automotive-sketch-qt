@@ -56,28 +56,17 @@ import QtQuick.Window 2.0
 
 ApplicationWindow {
     id: window
-    width: 1280
-    height: 720
-    //    minimumWidth: 1180
-    //    minimumHeight: 663
+    width: Screen.width
+    height: Screen.height
     visible: true
     title: "Qt Quick Controls 2 - Imagine Style Example: Automotive"
 
-    readonly property color colorGlow: "#1d6d64"
-    readonly property color colorWarning: "#d5232f"
-    readonly property color colorMain: "#6affcd"
-    readonly property color colorBright: "#ffffff"
-    readonly property color colorLightGrey: "#888"
-    readonly property color colorDarkGrey: "#333"
-
-    readonly property int fontSizeExtraSmall: Qt.application.font.pixelSize * 0.8
-    readonly property int fontSizeMedium: Qt.application.font.pixelSize * 1.5
-    readonly property int fontSizeLarge: Qt.application.font.pixelSize * 2
-    readonly property int fontSizeExtraLarge: Qt.application.font.pixelSize * 5
+    //    readonly property int fontSizeExtraSmall: Qt.application.font.pixelSize * 0.8
 
     Component.onCompleted: {
         x = Screen.width / 2 - width / 2
         y = Screen.height / 2 - height / 2
+        console.log(height, " ", Screen.height)
     }
 
     Shortcut {
@@ -88,16 +77,13 @@ ApplicationWindow {
     Frame {
         id: frame
         anchors.fill: parent
-        anchors {
-            margins: (window.height < window.width) ? window.height / 72 : window.width / 72
-        }
+        anchors.margins: Screen.height / 100
+
         RowLayout {
             id: mainRowLayout
             anchors.fill: parent
-            //            anchors {
-            //                margins: (window.height < width) ? window.height / 72 : window.width / 72
-            //            }
-            spacing: window.height / 40
+            anchors.margins: Screen.height / 100
+            spacing: 10
 
             Container {
                 id: leftTabBar
@@ -106,10 +92,6 @@ ApplicationWindow {
 
                 Layout.fillWidth: false
                 Layout.fillHeight: true
-
-                Component.onCompleted: {
-                    console.log("Hight: ", leftTabBar.height)
-                }
 
                 ButtonGroup {
                     buttons: columnLayout.children
@@ -129,17 +111,23 @@ ApplicationWindow {
                     text: qsTr("Navigation")
                     icon.name: "navigation"
                     Layout.fillHeight: true
+                    checked: true
                 }
 
                 FeatureButton {
                     text: qsTr("Music")
                     icon.name: "music"
-                    checked: true
                     Layout.fillHeight: true
                 }
 
                 FeatureButton {
-                    text: qsTr("Voice")
+                    text: qsTr("Message")
+                    icon.name: "message"
+                    Layout.fillHeight: true
+                }
+
+                FeatureButton {
+                    text: qsTr("Command")
                     icon.name: "command"
                     Layout.fillHeight: true
                 }
@@ -149,495 +137,57 @@ ApplicationWindow {
                     icon.name: "settings"
                     Layout.fillHeight: true
                 }
+
             }
 
-            StackLayout {
-                currentIndex: leftTabBar.currentIndex
-
-                Layout.preferredWidth: 150
-                Layout.maximumWidth: 150
-                Layout.fillWidth: false
-
-                Item {}
-
-                ColumnLayout {
-                    spacing: 16
-
-                    ButtonGroup {
-                        id: viewButtonGroup
-                        buttons: viewTypeRowLayout.children
-                    }
-
-                    RowLayout {
-                        id: viewTypeRowLayout
-                        spacing: 3
-
-                        Layout.bottomMargin: 12
-
-                        Button {
-                            text: qsTr("Compact")
-                            font.pixelSize: fontSizeExtraSmall
-                            checked: true
-
-                            Layout.fillWidth: true
-                        }
-                        Button {
-                            text: qsTr("Full")
-                            font.pixelSize: fontSizeExtraSmall
-                            checkable: true
-
-                            Layout.fillWidth: true
-                        }
-                    }
-
-                    GlowingLabel {
-                        text: qsTr("VOLUME")
-                        color: "white"
-                        font.pixelSize: fontSizeMedium
-                    }
-
-                    Dial {
-                        id: volumeDial
-                        from: 0
-                        value: 42
-                        to: 100
-                        stepSize: 1
-
-                        Layout.alignment: Qt.AlignHCenter
-                        Layout.minimumWidth: 64
-                        Layout.minimumHeight: 64
-                        Layout.preferredWidth: 128
-                        Layout.preferredHeight: 128
-                        Layout.maximumWidth: 128
-                        Layout.maximumHeight: 128
-                        Layout.fillHeight: true
-
-                        Label {
-                            text: volumeDial.value.toFixed(0)
-                            color: "white"
-                            font.pixelSize: Qt.application.font.pixelSize * 3
-                            anchors.centerIn: parent
-                        }
-                    }
-
-                    ButtonGroup {
-                        id: audioSourceButtonGroup
-                    }
-
-                    RowLayout {
-                        Layout.topMargin: 16
-
-                        GlowingLabel {
-                            id: radioOption
-                            text: qsTr("RADIO")
-                            color: "white"
-                            font.pixelSize: fontSizeMedium
-                            horizontalAlignment: Label.AlignLeft
-
-                            Layout.fillWidth: true
-                        }
-                        GlowingLabel {
-                            text: qsTr("AUX")
-                            color: colorLightGrey
-                            font.pixelSize: fontSizeMedium * 0.8
-                            horizontalAlignment: Label.AlignHCenter
-                            glowEnabled: false
-
-                            Layout.alignment: Qt.AlignBottom
-                            Layout.fillWidth: true
-                        }
-                        GlowingLabel {
-                            text: qsTr("MP3")
-                            color: colorDarkGrey
-                            font.pixelSize: fontSizeMedium * 0.6
-                            horizontalAlignment: Label.AlignRight
-                            glowEnabled: false
-
-                            Layout.alignment: Qt.AlignBottom
-                            Layout.fillWidth: true
-                        }
-                    }
-
-                    Frame {
-                        id: stationFrame
-                        leftPadding: 1
-                        rightPadding: 1
-                        topPadding: 1
-                        bottomPadding: 1
-
-                        Layout.fillWidth: true
-                        Layout.fillHeight: true
-                        Layout.preferredHeight: 128
-
-                        ListView {
-                            clip: true
-                            anchors.fill: parent
-
-                            ScrollIndicator.vertical: ScrollIndicator {
-                                parent: stationFrame
-                                anchors.top: parent.top
-                                anchors.right: parent.right
-                                anchors.rightMargin: 1
-                                anchors.bottom: parent.bottom
-                            }
-
-                            model: ListModel {
-                                ListElement { name: "V-Radio"; frequency: "105.5 MHz" }
-                                ListElement { name: "World News"; frequency: "93.4 MHz" }
-                                ListElement { name: "TekStep FM"; frequency: "95.0 MHz" }
-                                ListElement { name: "Classic Radio"; frequency: "89.9 MHz" }
-                                ListElement { name: "Buena Vista FM"; frequency: "100.8 MHz" }
-                                ListElement { name: "Drive-by Radio"; frequency: "99.1 MHz" }
-                                ListElement { name: "Unknown #1"; frequency: "104.5 MHz" }
-                                ListElement { name: "Unknown #2"; frequency: "91.2 MHz" }
-                                ListElement { name: "Unknown #3"; frequency: "93.8 MHz" }
-                                ListElement { name: "Unknown #4"; frequency: "80.4 MHz" }
-                                ListElement { name: "Unknown #5"; frequency: "101.1 MHz" }
-                                ListElement { name: "Unknown #6"; frequency: "92.2 MHz" }
-                            }
-                            delegate: ItemDelegate {
-                                id: stationDelegate
-                                width: parent.width
-                                height: 22
-                                text: model.name
-                                font.pixelSize: fontSizeExtraSmall
-                                topPadding: 0
-                                bottomPadding: 0
-
-                                contentItem: RowLayout {
-                                    Label {
-                                        text: model.name
-                                        font: stationDelegate.font
-                                        horizontalAlignment: Text.AlignLeft
-                                        Layout.fillWidth: true
-                                    }
-                                    Label {
-                                        text: model.frequency
-                                        font: stationDelegate.font
-                                        horizontalAlignment: Text.AlignRight
-                                        Layout.fillWidth: true
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    Frame {
-                        Layout.fillWidth: true
-
-                        RowLayout {
-                            anchors.fill: parent
-
-                            Label {
-                                text: qsTr("Sort by")
-                                font.pixelSize: fontSizeExtraSmall
-
-                                Layout.alignment: Qt.AlignTop
-                            }
-
-                            ColumnLayout {
-                                RadioButton {
-                                    text: qsTr("Name")
-                                    font.pixelSize: fontSizeExtraSmall
-                                }
-                                RadioButton {
-                                    text: qsTr("Frequency")
-                                    font.pixelSize: fontSizeExtraSmall
-                                }
-                                RadioButton {
-                                    text: qsTr("Favourites")
-                                    font.pixelSize: fontSizeExtraSmall
-                                    checked: true
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            Rectangle {
-                color: colorMain
-                implicitWidth: 1
+            GridLayout {
+                id: gridLayout
+                Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 Layout.fillHeight: true
-            }
-
-            ColumnLayout {
-                Layout.preferredWidth: 350
                 Layout.fillWidth: true
-                Layout.fillHeight: true
+                rows: 5
+                columns: 6
 
-                GlowingLabel {
-                    id: timeLabel
-                    text: qsTr("11:02")
-                    font.pixelSize: fontSizeExtraLarge
-
-                    Layout.alignment: Qt.AlignHCenter
-
-                    GlowingLabel {
-                        text: qsTr("AM")
-                        font.pixelSize: fontSizeLarge
-                        anchors.left: parent.right
-                        anchors.leftMargin: 8
-                    }
-                }
-
-                Label {
-                    text: qsTr("01/01/2018")
-                    color: colorLightGrey
-                    font.pixelSize: fontSizeMedium
-
-                    Layout.alignment: Qt.AlignHCenter
-                    Layout.topMargin: 2
-                    Layout.bottomMargin: 10
-                }
-
-                Image {
-                    source: "qrc:/icons/car.png"
-                    fillMode: Image.PreserveAspectFit
-
+                Pane {
+                    id: todoContainerForMusic
+                    Layout.row: 1
+                    Layout.column: 1
+                    Layout.rowSpan: 4
+                    Layout.columnSpan: 1
                     Layout.fillHeight: true
-
-                    Column {
-                        x: parent.width * 0.88
-                        y: parent.height * 0.56
-                        spacing: 3
-
-                        Image {
-                            source: "qrc:/icons/warning.png"
-                            anchors.horizontalCenter: parent.horizontalCenter
-
-                            layer.enabled: true
-                            layer.effect: CustomGlow {
-                                spread: 0.2
-                                samples: 40
-                                color: colorWarning
-                            }
-                        }
-
-                        GlowingLabel {
-                            text: qsTr("Door open")
-                            color: colorWarning
-                            glowColor: Qt.rgba(colorWarning.r, colorWarning.g, colorWarning.b, 0.4)
-                        }
-                    }
+                    Layout.fillWidth: true
+                    Layout.preferredWidth: 150
                 }
+
+                //TODO make it as redrawable main screen
+                //next feature is a dash/reverse camera
+                PageWithMapMapboxGL {
+                    Layout.row: 1
+                    Layout.column: 2
+                    Layout.rowSpan: 4
+                    Layout.columnSpan: 5
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                }
+
+                Pane {
+                    id: todoContainerForClimateControlPanel
+                    Layout.row: 5
+                    Layout.column: 1
+                    Layout.rowSpan: 1
+                    Layout.columnSpan: 6
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 100
+                }
+
+
             }
 
-            Rectangle {
-                color: colorMain
-                implicitWidth: 1
-                Layout.fillHeight: true
-            }
 
-            ColumnLayout {
-                Row {
-                    spacing: 8
-
-                    Image {
-                        source: "qrc:/icons/weather.png"
-                    }
-
-                    Column {
-                        spacing: 8
-
-                        Row {
-                            anchors.horizontalCenter: parent.horizontalCenter
-
-                            GlowingLabel {
-                                id: outsideTempValueLabel
-                                text: qsTr("31")
-                                font.pixelSize: fontSizeExtraLarge
-                            }
-
-                            GlowingLabel {
-                                text: qsTr("°C")
-                                font.pixelSize: Qt.application.font.pixelSize * 2.5
-                                anchors.baseline: outsideTempValueLabel.baseline
-                            }
-                        }
-
-                        Label {
-                            text: qsTr("Osaka, Japan")
-                            color: colorLightGrey
-                            font.pixelSize: fontSizeMedium
-                        }
-                    }
-                }
-
-                ColumnLayout {
-                    id: airConRowLayout
-                    spacing: 8
-
-                    Layout.preferredWidth: 128
-                    Layout.preferredHeight: 380
-                    Layout.fillHeight: true
-
-                    Item {
-                        Layout.fillHeight: true
-                    }
-
-                    SwitchDelegate {
-                        text: qsTr("AC")
-                        leftPadding: 0
-                        rightPadding: 0
-                        topPadding: 0
-                        bottomPadding: 0
-
-                        Layout.fillWidth: true
-                    }
-
-                    // QTBUG-63269
-                    Item {
-                        implicitHeight: temperatureValueLabel.implicitHeight
-                        Layout.fillWidth: true
-                        Layout.topMargin: 16
-
-                        Label {
-                            text: qsTr("Temperature")
-                            anchors.baseline: temperatureValueLabel.bottom
-                            anchors.left: parent.left
-                        }
-
-                        GlowingLabel {
-                            id: temperatureValueLabel
-                            text: qsTr("24°C")
-                            font.pixelSize: fontSizeLarge
-                            anchors.right: parent.right
-                        }
-                    }
-
-                    Slider {
-                        value: 0.35
-                        Layout.fillWidth: true
-                    }
-
-                    // QTBUG-63269
-                    Item {
-                        implicitHeight: powerValueLabel.implicitHeight
-                        Layout.fillWidth: true
-                        Layout.topMargin: 16
-
-                        Label {
-                            text: qsTr("Power")
-                            anchors.baseline: powerValueLabel.bottom
-                            anchors.left: parent.left
-                        }
-
-                        GlowingLabel {
-                            id: powerValueLabel
-                            text: qsTr("10%")
-                            font.pixelSize: fontSizeLarge
-                            anchors.right: parent.right
-                        }
-                    }
-
-                    Slider {
-                        value: 0.25
-                        Layout.fillWidth: true
-                    }
-
-                    SwitchDelegate {
-                        text: qsTr("Low")
-                        leftPadding: 0
-                        rightPadding: 0
-                        topPadding: 0
-                        bottomPadding: 0
-
-                        Layout.fillWidth: true
-                        Layout.topMargin: 16
-                    }
-
-                    SwitchDelegate {
-                        text: qsTr("High")
-                        checked: true
-                        leftPadding: 0
-                        rightPadding: 0
-                        topPadding: 0
-                        bottomPadding: 0
-
-                        Layout.fillWidth: true
-                    }
-
-                    SwitchDelegate {
-                        text: qsTr("Defog")
-                        leftPadding: 0
-                        rightPadding: 0
-                        topPadding: 0
-                        bottomPadding: 0
-
-                        Layout.fillWidth: true
-                    }
-
-                    SwitchDelegate {
-                        text: qsTr("Recirculate")
-                        leftPadding: 0
-                        rightPadding: 0
-                        topPadding: 0
-                        bottomPadding: 0
-
-                        Layout.fillWidth: true
-                    }
-
-                    Item {
-                        Layout.fillHeight: true
-                    }
-                }
-            }
-
-            Container {
-                id: rightTabBar
-
-                currentIndex: 1
-
-                Layout.fillHeight: true
-
-                ButtonGroup {
-                    buttons: rightTabBarContentLayout.children
-                }
-
-                contentItem: ColumnLayout {
-                    id: rightTabBarContentLayout
-                    spacing: 3
-
-                    Repeater {
-                        model: rightTabBar.contentModel
-                    }
-                }
-
-                Item {
-                    Layout.fillHeight: true
-                }
-
-                FeatureButton {
-                    text: qsTr("Windows")
-                    icon.name: "windows"
-
-                    Layout.maximumHeight: navigationFeatureButton.height
-                    Layout.fillHeight: true
-                }
-                FeatureButton {
-                    text: qsTr("Air Con.")
-                    icon.name: "air-con"
-                    checked: true
-
-                    Layout.maximumHeight: navigationFeatureButton.height
-                    Layout.fillHeight: true
-                }
-                FeatureButton {
-                    text: qsTr("Seats")
-                    icon.name: "seats"
-
-                    Layout.maximumHeight: navigationFeatureButton.height
-                    Layout.fillHeight: true
-                }
-                FeatureButton {
-                    text: qsTr("Statistics")
-                    icon.name: "statistics"
-
-                    Layout.maximumHeight: navigationFeatureButton.height
-                    Layout.fillHeight: true
-                }
-            }
         }
     }
+
 }
+
+
